@@ -8,9 +8,14 @@ import lombok.*;
 @Setter
 @ToString
 @NoArgsConstructor
-@AllArgsConstructor
 public class User {
     private String idSession;
     private String nombre;
     private Rol rol;
+
+    public User (String idSession, String nombre, Rol rol){
+        this.idSession = idSession;
+        this.nombre = nombre;
+        this.rol = rol;
+    }
 }

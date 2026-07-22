@@ -1,4 +1,4 @@
-package jeredev.LobbyTrack.model;
+package jeredev.LobbyTrack.config;
 
 
 import org.springframework.context.annotation.Configuration;

@@ -32,4 +32,18 @@ public class Lobby {
         this(idSala, anfitrion);
         this.contraseña = contraseña;
     }
+
+    public boolean verificarContraseña(String contraseñaIngresada){
+        if(this.contraseña!=null || this.contraseña.trim().isEmpty()){
+            return true;
+        }
+        if(contraseñaIngresada == null){return false;}
+
+        return contraseñaIngresada.equals(contraseña);
+
+    }
+
+    public void agregarUsuarioAlaSala(User visitante){
+        this.usuarios.add(visitante);
+    }
 }

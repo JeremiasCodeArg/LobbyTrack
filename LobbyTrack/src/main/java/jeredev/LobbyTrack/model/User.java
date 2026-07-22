@@ -18,4 +18,6 @@ public class User {
         this.nombre = nombre;
         this.rol = rol;
     }
+
+
 }

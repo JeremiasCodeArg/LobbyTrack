@@ -34,12 +34,23 @@ public class LobbyService {
         lobbies.put(codigo, lobby);
         return lobby;
 
-
-
-
     }
 
-    public void unirseLobby(int codigoSala){
+    public void unirseLobby(String nombreVisitante, String sessionIdVisitante, String codigoSala,String contraseñaSala){
+        if(!lobbies.containsKey(codigoSala)){
+            throw new RuntimeException("Lobby no encontrado");
+        }
+        Lobby lobby = lobbies.get(codigoSala);
+
+        if(!lobby.verificarContraseña(contraseñaSala)){
+            throw new IllegalArgumentException("Contraseña incorrecta");
+        }
+
+        User usuarioVisitante = new User(sessionIdVisitante, nombreVisitante, Rol.VISITANTE);
+        lobby.agregarUsuarioAlaSala(usuarioVisitante);
+
+
+
     }
 
 

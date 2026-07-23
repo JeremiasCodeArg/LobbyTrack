@@ -18,7 +18,8 @@ public class Lobby {
     private List<User> usuarios;
     private Music musicReproduciendo;
     private boolean estaEnPlay;
-    private int segundoActual ;
+    private int posicionEnSegundos;
+    private Long momentoDelUltimoPlay;
     private String contraseña;
 
     public Lobby(String idSala, User anfitrionInicial) {
@@ -26,7 +27,7 @@ public class Lobby {
         this.usuarios = new ArrayList<>();
         this.usuarios.add(anfitrionInicial); // El anfitrión entra automáticamente
         this.estaEnPlay = false;
-        this.segundoActual = 0;
+        this.posicionEnSegundos = 0;
         this.musicReproduciendo = null;
     }
     public Lobby (String idSala, User anfitrion, String contraseña){
@@ -50,19 +51,7 @@ public class Lobby {
 
 
     public boolean eliminarUsuario(String idSessionUsuario) {
-        Iterator<User> iterator = this.usuarios.iterator();
-
-        while (iterator.hasNext()) {
-            User usuario = iterator.next();
-
-            if (usuario.getIdSession().equals(idSessionUsuario)) {
-                usuario.restablecerRol();
-                iterator.remove();
-                return true;
-            }
-        }
-
-        return false;
+        return this.usuarios.removeIf(user -> user.getIdSession().equals(idSessionUsuario));
     }
 
     public synchronized void reproducirMusica(){
@@ -70,6 +59,7 @@ public class Lobby {
             throw new RuntimeException("No hay cancion reproduciendo");
         } else if (!estaEnPlay) {
             this.estaEnPlay = true;
+            this.momentoDelUltimoPlay = System.currentTimeMillis();
         }
 
 
@@ -79,11 +69,33 @@ public class Lobby {
         if(musicReproduciendo==null){
             throw new RuntimeException("No hay cancion reproduciendo");
         } else if (estaEnPlay) {
+            Long milisegundosTranscurridos = System.currentTimeMillis() - this.momentoDelUltimoPlay;
+            this.posicionEnSegundos += (int) (milisegundosTranscurridos / 1000);
             this.estaEnPlay = false;
+            this.momentoDelUltimoPlay = null;
         }
     }
+
+    public int obtenerPosicionActual() {
+
+        if (!this.estaEnPlay) {
+            return this.posicionEnSegundos;
+        }
+
+        // Si está en Play, tenemos que hacer la deducción matemática
+        long milisegundosTranscurridos = System.currentTimeMillis() - this.momentoDelUltimoPlay;
+        int segundosTranscurridos = (int) (milisegundosTranscurridos / 1000);
+
+
+        return this.posicionEnSegundos + segundosTranscurridos;
+    }
+
+
+
 
     public boolean salaVacia(){
         return this.usuarios.isEmpty();
     }
+
+
 }

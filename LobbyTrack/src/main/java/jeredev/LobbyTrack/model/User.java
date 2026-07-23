@@ -19,5 +19,7 @@ public class User {
         this.rol = rol;
     }
 
-
+    public void restablecerRol(){
+        this.rol = null;
+    }
 }

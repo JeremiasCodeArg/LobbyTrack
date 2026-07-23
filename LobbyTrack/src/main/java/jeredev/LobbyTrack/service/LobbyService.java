@@ -36,11 +36,9 @@ public class LobbyService {
 
     }
 
-    public void unirseLobby(String nombreVisitante, String sessionIdVisitante, String codigoSala,String contraseñaSala){
-        if(!lobbies.containsKey(codigoSala)){
-            throw new RuntimeException("Lobby no encontrado");
-        }
-        Lobby lobby = lobbies.get(codigoSala);
+    public void unirseLobby(String nombreVisitante, String sessionIdVisitante, String idSala,String contraseñaSala){
+        verificarSiLobbyExiste(idSala);
+        Lobby lobby = lobbies.get(idSala);
 
         if(!lobby.verificarContraseña(contraseñaSala)){
             throw new IllegalArgumentException("Contraseña incorrecta");
@@ -54,13 +52,37 @@ public class LobbyService {
     }
 
 
-    public void salirLobby(){
+    public void salirLobby(String idSessionUsuario, String idSala){
+        verificarSiLobbyExiste(idSala);
+
+        Lobby lobby = lobbies.get(idSala);
+        if(!lobby.eliminarUsuario(idSessionUsuario)){
+            throw new IllegalArgumentException("Usuario no encontrado");
+        };
+
+        if(lobby.salaVacia()){
+            lobbies.remove(idSala);
+        }
+
+
+
 
 
     }
 
-    public void ponerPlay(){
+    public void ponerPlay(String idSala){
+        verificarSiLobbyExiste(idSala);
+        Lobby  lobby = lobbies.get(idSala);
 
+        lobby.reproducirMusica();
+
+    }
+
+    public void ponerPausa(String idSala){
+        verificarSiLobbyExiste(idSala);
+        Lobby  lobby = lobbies.get(idSala);
+
+        lobby.pausarMusica();
     }
 
 
@@ -77,7 +99,11 @@ public class LobbyService {
     }
 
 
-
+    private void verificarSiLobbyExiste(String idSala){
+        if(!lobbies.containsKey(idSala)){
+            throw new RuntimeException("Lobby no encontrado");
+        }
+    }
 
 
 

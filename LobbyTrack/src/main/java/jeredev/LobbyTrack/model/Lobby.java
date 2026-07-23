@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 @Getter
@@ -45,5 +46,44 @@ public class Lobby {
 
     public void agregarUsuarioAlaSala(User visitante){
         this.usuarios.add(visitante);
+    }
+
+
+    public boolean eliminarUsuario(String idSessionUsuario) {
+        Iterator<User> iterator = this.usuarios.iterator();
+
+        while (iterator.hasNext()) {
+            User usuario = iterator.next();
+
+            if (usuario.getIdSession().equals(idSessionUsuario)) {
+                usuario.restablecerRol();
+                iterator.remove();
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public synchronized void reproducirMusica(){
+        if(musicReproduciendo==null){
+            throw new RuntimeException("No hay cancion reproduciendo");
+        } else if (!estaEnPlay) {
+            this.estaEnPlay = true;
+        }
+
+
+    }
+
+    public synchronized void pausarMusica(){
+        if(musicReproduciendo==null){
+            throw new RuntimeException("No hay cancion reproduciendo");
+        } else if (estaEnPlay) {
+            this.estaEnPlay = false;
+        }
+    }
+
+    public boolean salaVacia(){
+        return this.usuarios.isEmpty();
     }
 }

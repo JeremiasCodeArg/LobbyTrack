@@ -24,11 +24,15 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         // BROKER
 
         //Le dice al broker quetodo que comience con /topic es resposonsabilidad suya
-        config.enableSimpleBroker("/topic");
+        config.enableSimpleBroker("/topic", "/queue");
 
         //le dice al broker, si llega mensaje desde un celular y su destino empieza con /app
         //no lo repartas, este mensaje es para mi. Frenalo y busca en mis clases controller.
         config.setApplicationDestinationPrefixes("/app");
+
+        config.setUserDestinationPrefix("/user");
+
+
     }
 
 }

@@ -77,24 +77,7 @@ public class LobbyWebSocketController {
 
     }
 
-    @MessageMapping("/lobby/crearLobby")
-    public void crearLobby(UnirseLobbyDTO lobby,  SimpMessageHeaderAccessor headerAccessor){
-        String usuarioIdSession = headerAccessor.getSessionId();
-
-        Lobby lobbyCreacion = lobbyService.crearLobby(
-                lobby.nombreUsuario(),
-                usuarioIdSession,
-                lobby.contraseña()
-                 );
-
-
-        LobbyEstadoDTO lobbyActualizado = new LobbyEstadoDTO(
-                lobbyCreacion.isEstaEnPlay(),
-                lobbyCreacion.getPosicionEnSegundos(),
-                lobbyCreacion.getMusicReproduciendo(),
-                lobbyCreacion.getUsuarios()
-        );
-
+    
 
 
 

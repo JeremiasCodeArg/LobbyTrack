@@ -10,6 +10,7 @@ import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessageType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 public class LobbyWebSocketController {
@@ -77,11 +78,25 @@ public class LobbyWebSocketController {
 
     }
 
-    
 
+    @RequestMapping("/lobby/pausar")
+    public void pausarMusica(LobbyRequestDTO lobby , SimpMessageHeaderAccessor headerAccessor){
 
+        Lobby lobbyActual = lobbyService.ponerPausa(lobby.id());
+        String nombreUsuario = lobbyActual.devolverNombreUsuario(headerAccessor.getSessionId());
+
+        ReproductorEstadoDTO reproductor = new ReproductorEstadoDTO(
+                lobbyActual.isEstaEnPlay(),
+                lobbyActual.getPosicionEnSegundos(),
+                nombreUsuario
+        );
+
+        messagingTemplate.convertAndSend("/topic/lobby/" + lobby.id(), reproductor);
 
     }
+
+
+
 
 
 }

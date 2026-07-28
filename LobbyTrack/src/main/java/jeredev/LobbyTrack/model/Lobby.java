@@ -49,6 +49,17 @@ public class Lobby {
         this.usuarios.add(visitante);
     }
 
+    public String devolverNombreUsuario(String idSession){
+        if(this.usuarios==null || this.usuarios.isEmpty()){return null;}
+
+        String nombreUsuario = usuarios.stream()
+                .filter(usuario -> usuario.getIdSession().equals(idSession))
+                .map(User::getNombre)
+                .findFirst()
+                .orElse("Alguien");
+        return nombreUsuario;
+
+    }
 
     public boolean eliminarUsuario(String idSessionUsuario) {
         return this.usuarios.removeIf(user -> user.getIdSession().equals(idSessionUsuario));

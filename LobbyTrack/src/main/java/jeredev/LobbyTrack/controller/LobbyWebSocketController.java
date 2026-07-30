@@ -95,7 +95,21 @@ public class LobbyWebSocketController {
 
     }
 
+    @RequestMapping("lobby/play")
+    public void ponerPlay(LobbyRequestDTO lobby, SimpMessageHeaderAccessor headerAccessor){
 
+        Lobby lobbyActual = lobbyService.ponerPlay(lobby.id());
+        String nombreUsuario = lobbyActual.devolverNombreUsuario(headerAccessor.getSessionId());
+
+        ReproductorEstadoDTO reproductor = new ReproductorEstadoDTO(
+                lobbyActual.isEstaEnPlay(),
+                lobbyActual.getPosicionEnSegundos(),
+                nombreUsuario
+        );
+        messagingTemplate.convertAndSend("/topic/lobby/" + lobby.id(), reproductor);
+
+
+    }
 
 
 

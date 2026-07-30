@@ -79,12 +79,12 @@ public class LobbyService {
 
     }
 
-    public void ponerPlay(String idSala){
+    public Lobby ponerPlay(String idSala){
         verificarSiLobbyExiste(idSala);
         Lobby  lobby = lobbies.get(idSala);
 
         lobby.reproducirMusica();
-
+        return lobby;
     }
 
     public Lobby ponerPausa(String idSala){

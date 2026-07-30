@@ -35,6 +35,14 @@ public class Lobby {
         this.contraseña = contraseña;
     }
 
+    public synchronized void cargarMusicaNueva(Music music) {
+        this.musicReproduciendo = music;
+        this.estaEnPlay = true;
+        this.posicionEnSegundos = 0;
+        this.momentoDelUltimoPlay = System.currentTimeMillis();
+    }
+
+
     public boolean verificarContraseña(String contraseñaIngresada){
         if(this.contraseña!=null || this.contraseña.trim().isEmpty()){
             return true;

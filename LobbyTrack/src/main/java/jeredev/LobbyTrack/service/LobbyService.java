@@ -58,6 +58,23 @@ public class LobbyService {
 
     }
 
+    public Lobby agregarMusica(String idSala, String titulo, String artista, String url, int duracionEnSegundos){
+        verificarSiLobbyExiste(idSala);
+        Lobby lobby =  lobbies.get(idSala);
+
+        Music musica = Music.builder()
+                .titulo(titulo)
+                .artista(artista)
+                .urlAudio(url)
+                .duracionEnSegundos(duracionEnSegundos)
+                .build();
+        
+        lobby.cargarMusicaNueva(musica);
+
+        return lobby;
+    }
+
+
 
 
     public UsuarioSalioDTO salirLobby(String idSessionUsuario, String idSala){

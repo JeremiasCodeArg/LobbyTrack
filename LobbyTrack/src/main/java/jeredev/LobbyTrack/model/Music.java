@@ -7,6 +7,7 @@ import java.sql.Time;
 @Getter
 @Setter
 @ToString
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Music {

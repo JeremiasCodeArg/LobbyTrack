@@ -4,6 +4,7 @@ import jeredev.LobbyTrack.Dtos.LobbyEstadoDTO;
 import jeredev.LobbyTrack.Dtos.UsuarioSalioDTO;
 import jeredev.LobbyTrack.enums.Rol;
 import jeredev.LobbyTrack.model.Lobby;
+import jeredev.LobbyTrack.model.Music;
 import jeredev.LobbyTrack.model.User;
 import org.springframework.stereotype.Service;
 
@@ -68,7 +69,7 @@ public class LobbyService {
                 .urlAudio(url)
                 .duracionEnSegundos(duracionEnSegundos)
                 .build();
-        
+
         lobby.cargarMusicaNueva(musica);
 
         return lobby;

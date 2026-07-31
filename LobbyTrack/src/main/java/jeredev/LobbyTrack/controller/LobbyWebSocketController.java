@@ -79,7 +79,7 @@ public class LobbyWebSocketController {
     }
 
 
-    @RequestMapping("/lobby/pausar")
+    @MessageMapping("/lobby/pausar")
     public void pausarMusica(LobbyRequestDTO lobby , SimpMessageHeaderAccessor headerAccessor){
 
         Lobby lobbyActual = lobbyService.ponerPausa(lobby.id());
@@ -95,7 +95,7 @@ public class LobbyWebSocketController {
 
     }
 
-    @RequestMapping("lobby/play")
+    @MessageMapping("lobby/play")
     public void ponerPlay(LobbyRequestDTO lobby, SimpMessageHeaderAccessor headerAccessor){
 
         Lobby lobbyActual = lobbyService.ponerPlay(lobby.id());
@@ -111,10 +111,10 @@ public class LobbyWebSocketController {
 
     }
 
-    @RequestMapping("/lobby/ponerMusica")
+    @MessageMapping("/lobby/ponerMusica")
     public void ponerMusica(cargarMusicaRequest musicaRequest ,SimpMessageHeaderAccessor headerAccessor){
-        String nombreUsuario = headerAccessor.getSessionId();
-        String idLobby = musicaRequest.idSala();
+
+
 
         Lobby lobbyActualizado = lobbyService.agregarMusica(
                 musicaRequest.idSala(),
@@ -124,8 +124,16 @@ public class LobbyWebSocketController {
                 musicaRequest.duracionEnsegundos()
         );
 
+        String nombreUsuario = lobbyActualizado.devolverNombreUsuario(headerAccessor.getSessionId());
 
+        MusicaCargadaDTO musicaCargada = new MusicaCargadaDTO(
+                lobbyActualizado.getMusicReproduciendo(),
+                lobbyActualizado.isEstaEnPlay(),
+                lobbyActualizado.getPosicionEnSegundos(),
+                nombreUsuario
+        );
 
+        messagingTemplate.convertAndSend("/topic/lobby/" + musicaRequest.idSala(), musicaCargada);
 
     }
 

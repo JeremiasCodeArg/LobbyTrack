@@ -112,16 +112,13 @@ public class LobbyWebSocketController {
     }
 
     @MessageMapping("/lobby/ponerMusica")
-    public void ponerMusica(cargarMusicaRequest musicaRequest ,SimpMessageHeaderAccessor headerAccessor){
+    public void ponerMusica(CargarMusicaRequest musicaRequest ,SimpMessageHeaderAccessor headerAccessor){
 
 
 
-        Lobby lobbyActualizado = lobbyService.agregarMusica(
+        Lobby lobbyActualizado = lobbyService.cargarNuevaMusica(
                 musicaRequest.idSala(),
-                musicaRequest.titulo(),
-                musicaRequest.artista(),
-                musicaRequest.url(),
-                musicaRequest.duracionEnsegundos()
+                musicaRequest.spotifyUrl()
         );
 
         String nombreUsuario = lobbyActualizado.devolverNombreUsuario(headerAccessor.getSessionId());

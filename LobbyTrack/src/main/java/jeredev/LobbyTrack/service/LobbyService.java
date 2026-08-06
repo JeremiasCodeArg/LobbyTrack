@@ -59,22 +59,33 @@ public class LobbyService {
 
     }
 
-    public Lobby agregarMusica(String idSala, String titulo, String artista, String url, int duracionEnSegundos){
-        verificarSiLobbyExiste(idSala);
-        Lobby lobby =  lobbies.get(idSala);
+    public Lobby cargarNuevaMusica(String idSala, String spotifyUrl) {
+        Lobby lobby = lobbies.get(idSala);
+        if (lobby == null) {
+            throw new RuntimeException("Lobby no encontrado");
+        }
 
-        Music musica = Music.builder()
-                .titulo(titulo)
-                .artista(artista)
-                .urlAudio(url)
-                .duracionEnSegundos(duracionEnSegundos)
+        // --- INICIO DEL MOCK (SIMULACIÓN) ---
+        // En el futuro, acá usaremos 'spotifyUrl' para hacer una petición HTTP a la API de Spotify.
+        // Por AHORA, no importa qué link nos pasen, vamos a crear una canción "de mentira"
+        // para asegurarnos de que el resto del sistema de WebSockets funcione.
+
+        System.out.println("Fingiendo conexión a Spotify para la URL: " + spotifyUrl);
+
+        Music musicaFalsa = Music.builder()
+                .titulo("Canción de Prueba (Mock)")
+                .artista("El Backend")
+                .urlAudio(spotifyUrl) // Guardamos la url original por las dudas
+                .duracionEnSegundos(180) // 3 minutos falsos
+                .urlPortada("https://mi-imagen-falsa.com/portada.jpg")
                 .build();
+        // --- FIN DEL MOCK ---
 
-        lobby.cargarMusicaNueva(musica);
+        // Inyectamos la música usando tu método seguro (synchronized)
+        lobby.cargarMusicaNueva(musicaFalsa);
 
         return lobby;
     }
-
 
 
 

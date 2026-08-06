@@ -50,7 +50,7 @@ public class SpotifyAuthService {
         HttpEntity<MultiValueMap<String, String>> request = new HttpEntity<>(body, headers);
 
         ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
-        response.ge
+
 
 
         System.out.println("Respuesta de Spotify: " + response.getBody());
